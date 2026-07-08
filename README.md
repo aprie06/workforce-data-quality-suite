@@ -1,6 +1,7 @@
 # Timesheet & Workforce Data Quality Suite
 
-[![Data Quality Pipeline](https://github.com/aprie06/workforce-data-quality-suite/actions/workflows/pipeline.yml/badge.svg)](https://github.com/YOUR-GITHUB-USERNAME/workforce-data-quality-suite/actions/workflows/pipeline.yml)
+[![Data Quality Pipeline](https://github.com/aprie06/workforce-data-quality-suite/actions/workflows/pipeline.yml/badge.svg)](https://github.com/aprie06/workforce-data-quality-suite/actions/workflows/pipeline.yml)
+
 
 A data quality validation pipeline for multi-site workforce timesheet data,
 combining SQL-based business rule checks with an automated Great
