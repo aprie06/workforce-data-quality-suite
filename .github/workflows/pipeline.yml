@@ -1,0 +1,58 @@
+name: Data Quality Pipeline
+
+# Runs the full generate -> load -> validate -> chart pipeline on every
+# push and PR. This is a CI smoke test for the pipeline itself, not a
+# gate on data cleanliness: the synthetic dataset has intentional defects
+# by design, so the SQL/GX checks are expected to flag rows and the GX
+# suite is expected to report overall success: False. The build should
+# only fail if a script errors out, not because the data has defects in
+# it, that's the point of the project.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate synthetic dataset
+        run: python scripts/generate_data.py
+
+      - name: Load into SQLite
+        run: python scripts/load_to_sqlite.py
+
+      - name: Run SQL validation checks
+        run: python scripts/run_sql_checks.py
+
+      - name: Run Great Expectations suite
+        run: python scripts/run_great_expectations.py
+
+      - name: Build defect summary chart
+        run: python scripts/make_summary_chart.py
+
+      - name: Upload reports as build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-quality-reports
+          path: |
+            reports/sql_findings_report.md
+            reports/gx_findings_report.md
+            reports/gx_validation_results.json
+            reports/defect_summary_chart.png
+          retention-days: 30
