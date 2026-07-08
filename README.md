@@ -106,3 +106,7 @@ here deliberately rather than implied as already built.
 All data in this project is synthetically generated for demonstration
 purposes. No real employee, student, intern, or institutional data is
 used or represented.
+
+## Licences
+
+MIT License. Copyright (c) 2026 Alexis Prieto.
